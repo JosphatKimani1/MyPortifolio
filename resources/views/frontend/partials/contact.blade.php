@@ -15,25 +15,25 @@
                               <div class="col-sm-6">
                                  <div class="form_group">
                                     <input type="text" name="fname" id="conName" placeholder="First name"
-                                       autocomplete="off" />
+                                       autocomplete="off" / required>
                                  </div>
                               </div>
                               <div class="col-sm-6">
                                  <div class="form_group">
                                     <input type="text" name="lname" id="conLName" placeholder="Last name"
-                                       autocomplete="off" />
+                                       autocomplete="off" / required>
                                  </div>
                               </div>
                               <div class="col-sm-6">
                                  <div class="form_group">
                                     <input type="email" name="email" id="conEmail" placeholder="Email address"
-                                       autocomplete="off" />
+                                       autocomplete="off" / required>
                                  </div>
                               </div>
                               <div class="col-sm-6">
                                  <div class="form_group">
                                     <input type="tel" name="phone" id="conPhone" placeholder="Phone number"
-                                       autocomplete="off" />
+                                       autocomplete="off" / required>
                                  </div>
                               </div>
 
@@ -46,14 +46,14 @@
                                     <select name="service_id" id="conService" class="tj-nice-select">
                                        <option value="" selected disabled>Choose Service</option>
                                        @foreach ( $services as  $service)
-                                          <option value="{{ $service->id }}">{{ Str::title($service->service_title) }}</option>
+                                          <option value="{{ $service->id }}">{{ Str::title($service->service_title) }}</option required>
                                        @endforeach
                                     </select>
                                  </div>
                               </div>
                               <div class="col-12">
                                  <div class="form_group">
-                                    <textarea name="description" id="conMessage" placeholder="Description"></textarea>
+                                    <textarea name="description" id="conMessage" placeholder="Description" required></textarea>
                                  </div>
                               </div>
                               <div class="col-12">
