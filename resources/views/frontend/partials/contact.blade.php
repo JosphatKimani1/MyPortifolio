@@ -43,7 +43,7 @@
 
                               <div class="col-12">
                                  <div class="form_group">
-                                    <select name="service_id" id="conService" class="tj-nice-select">
+                                    <select name="service_id" id="conService" class="tj-nice-select" required>
                                        <option value="" selected disabled>Choose Service</option>
                                        @foreach ( $services as  $service)
                                           <option value="{{ $service->id }}">{{ Str::title($service->service_title) }}</option required>
