@@ -10,20 +10,20 @@ COPY composer.json composer.lock ./
 # Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev --no-interaction
 
-# Copy package.json for Node dependencies
+# Copy Node dependencies
 COPY package.json package-lock.json ./
 
 # Install Node dependencies
 RUN npm ci --omit=dev
 
-# Copy the rest of the application
+# Copy the rest of the Laravel application
 COPY . .
 
-# Set proper permissions for Laravel storage and cache
+# Set proper permissions for Laravel storage and bootstrap/cache
 RUN mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# Clear Laravel caches and precompile views, routes, config
+# Clear Laravel caches and precompile views, routes, and config
 RUN php artisan config:clear \
     && php artisan route:clear \
     && php artisan view:clear \
@@ -32,11 +32,11 @@ RUN php artisan config:clear \
     && php artisan route:cache \
     && php artisan view:cache
 
-# Build front-end assets if you use Vite/Mix
+# Build front-end assets if using Vite/Mix
 RUN npm run build || echo "No front-end build script detected"
 
-# Expose port (Railway assigns $PORT, so will map automatically)
+# Expose port 8080 (Railway will map $PORT automatically)
 EXPOSE 8080
 
 # Start Laravel using PHP built-in server
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
