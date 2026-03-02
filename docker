@@ -1,0 +1,42 @@
+# Use FrankenPHP base image with PHP 8.2
+FROM dunglas/frankenphp:php8.2.30-bookworm
+
+# Set working directory
+WORKDIR /app
+
+# Copy composer files first for caching
+COPY composer.json composer.lock ./
+
+# Install PHP dependencies
+RUN composer install --optimize-autoloader --no-dev --no-interaction
+
+# Copy package.json for Node dependencies
+COPY package.json package-lock.json ./
+
+# Install Node dependencies
+RUN npm ci --omit=dev
+
+# Copy the rest of the application
+COPY . .
+
+# Set proper permissions for Laravel storage and cache
+RUN mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
+# Clear Laravel caches and precompile views, routes, config
+RUN php artisan config:clear \
+    && php artisan route:clear \
+    && php artisan view:clear \
+    && php artisan cache:clear \
+    && php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
+
+# Build front-end assets if you use Vite/Mix
+RUN npm run build || echo "No front-end build script detected"
+
+# Expose port (Railway assigns $PORT, so will map automatically)
+EXPOSE 8080
+
+# Start Laravel using PHP built-in server
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
