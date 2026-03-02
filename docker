@@ -35,8 +35,8 @@ RUN php artisan config:clear \
 # Build front-end assets if using Vite/Mix
 RUN npm run build || echo "No front-end build script detected"
 
-# Expose port 8080 (Railway will map $PORT automatically)
-EXPOSE 8080
+# Expose port 8000 (Railway will map $PORT automatically)
+EXPOSE 8000
 
 # Start Laravel using PHP built-in server
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
